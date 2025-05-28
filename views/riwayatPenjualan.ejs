@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Riwayat</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="riwayat-penjualan-body">
+    <%- include('layout/sidebar') %>
+
+    <div class="content-container">
+      <div class="button-container">
+        <form action="/penjualan/generate/pdf" method="GET" class="button">
+          <button type="submit">Generate PDF</button>
+        </form>
+        <!-- <form action="/generate/excel" method="GET" class="button">
+                <button type="submit">Generate Excel</button>
+            </form> -->
+      </div>
+
+      <h2>Riwayat</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>ID Detail</th>
+            <th>Nama Pembeli</th>
+            <th>Nama Produk</th>
+            <th>Tanggal Beli</th>
+            <th>Jumlah</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% detailList.forEach((detail, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= detail._id %></td>
+            <td>
+              <%= detail.penjualan && detail.penjualan.user ?
+              detail.penjualan.user.name : '-' %>
+            </td>
+            <td><%= detail.produk ? detail.produk.nama : '-' %></td>
+            <td>
+              <%= detail.penjualan ? new
+              Date(detail.penjualan.tanggal).toLocaleDateString() : '-' %>
+            </td>
+            <td><%= detail.jumlahProduk %></td>
+            <td><%= detail.subtotal %></td>
+            <td>
+              <form
+                action="/penjualan/<%= detail.penjualan._id %>/hapus"
+                method="POST"
+                onsubmit="return confirm('Yakin ingin menghapus riwayat ini?');"
+              >
+                <button type="submit">Hapus</button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

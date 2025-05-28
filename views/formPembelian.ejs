@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Produk</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="form-pembelian">
+    <h1>Beli Produk: <%= produk.nama %></h1>
+    <p>Harga: Rp <%= produk.harga %></p>
+    <p>Stok tersedia: <%= produk.stok %></p>
+
+    <form id="formBeli" data-id="<%= produk._id %>">
+  <label>Jumlah: </label>
+  <input type="number" name="jumlah" min="1" max="<%= produk.stok %>" required />
+  <button type="submit">Beli</button>
+</form>
+
+<script>
+  document.getElementById('formBeli').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const id = form.getAttribute('data-id');
+    const jumlah = form.jumlah.value;
+
+    try {
+      const response = await fetch(`/produk/beli/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jumlah: parseInt(jumlah) }) // pastikan jumlah dikirim sebagai number
+      });
+
+      const message = await response.text();
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: message
+        }).then(() => {
+          window.location.href = "/produk";
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: message
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Terjadi kesalahan saat menghubungi server.'
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

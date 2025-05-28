@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="daftar-produk-body">
+    <div class="main-container"> <!-- Flex Container -->
+        <%- include('layout/sidebar') %>
+
+        <div class="content">
+            <!-- <h1>Daftar Produk</h1> -->
+            <div class="cart-container">
+                <% produkList.forEach(produk => { %>
+                    <div class="cart-item">
+                        <img src="/img/<%= produk.foto %>" alt="Foto Produk" width="100" />
+                        <div class="cart-item-info">
+                            <h3><strong></strong> <%= produk.nama %></h3>
+                            <p><strong>Harga:</strong> Rp <%= produk.harga %></p>
+                            <p><strong>Stok:</strong> <%= produk.stok %></p>
+                        </div>
+                        <a href="/produk/beli/<%= produk._id %>" class="btn btn-success btn-top">Beli</a>
+                        <div class="btn-row">
+                            <a href="/produk/edit/<%= produk.id %>" class="btn btn-primary btn-bottom">Update</a>
+                            <a href="/produk/delete/<%= produk.id %>" class="btn btn-danger btn-bottom">Delete</a>
+                        </div>
+
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
